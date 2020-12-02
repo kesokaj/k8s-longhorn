@@ -1,53 +1,13 @@
-## Expose deployment
+## Prereq
 ```
-kubectl expose deployment <deploymentname> --type=LoadBalancer --port 80 --target-port 80
-```
-
-## Autoscale deployment
-```
-kubectl autoscale deployment <deploymentname> --max 6 --min 4 --cpu-percent 50
-```
-
-## Troubleshoot pods
-```
-kubectl run curl --image=radial/busyboxplus:curl -n <namespace> -i --tty
-```
-
-## Delete evicted pods
-```
-kubectl get pods --all-namespaces| grep Evicted | $(awk '{print "kubectl -n " $1 " delete pod "$2}')
-```
-
-## Lable nodes
-```
-kubectl label nodes <nodename> kubernetes.io/role=worker
-```
-
-## Allow pods on masters
-```
-kubectl taint nodes --all node-role.kubernetes.io/master-
-```
-
-## Install helm
-```
-curl https://baltocdn.com/helm/signing.asc | sudo apt-key add -
-sudo apt-get install apt-transport-https --yes
-echo "deb https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
-sudo apt-get update
-sudo apt-get install helm
-```
-
-## Kubeadm join command
-```
-kubeadm token create --print-join-command
-```
-
-## Kubernetes dashboard token
-```
-kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep admin-user | awk '{print $1}')
-```
-
-## Fix cluster-admin
-```
-kubectl [--namespace kube-system] create clusterrolebinding tiller-cluster-admin --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+    A container runtime compatible with Kubernetes (Docker v1.13+, containerd v1.3.7+, etc.)
+    Kubernetes v1.14+.
+    open-iscsi has been installed on all the nodes of the Kubernetes cluster, and iscsid daemon is running on all the nodes. This is necessary, since Longhorn relies on iscsiadm on the host to provide persistent volumes to Kubernetes.
+        For GKE, recommended Ubuntu as guest OS image since it contains open-iscsi already.
+        For Debian/Ubuntu, use apt-get install open-iscsi to install.
+        For RHEL/CentOS, use yum install iscsi-initiator-utils to install.
+        For EKS with EKS Kubernetes Worker AMI with AmazonLinux2 image, use yum install iscsi-initiator-utils to install. You may need to edit cluster security group to allow ssh access.
+    A host filesystem supports file extents feature on the nodes to store the data. Currently we support:
+        ext4
+        XFS
 ```
