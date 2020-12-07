@@ -165,4 +165,4 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: "64Gi" # make this 10% bigger then the workload pvc
+      storage: "32Gi" # make this 10% bigger then the workload pvc

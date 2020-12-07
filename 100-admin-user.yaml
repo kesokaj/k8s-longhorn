@@ -1,0 +1,20 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: longhorn-admin-user
+  namespace: longhorn-system
+spec:
+  basicAuth:
+    secret: longhorn-admin-user
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: longhorn-admin-user
+  namespace: longhorn-system
+
+data:
+  users: |2
+    YWRtaW46JGFwcjEkUE9nenJmL3IkaHNIdVVMTzJTTk5STS9CbXBDRFRzMAoK
+

@@ -5,7 +5,7 @@ metadata:
   name: longhorn-rwo
 provisioner: driver.longhorn.io
 allowVolumeExpansion: true
-reclaimPolicy: Retain
+reclaimPolicy: Delete
 parameters:
   numberOfReplicas: "3"
   staleReplicaTimeout: "2880"
